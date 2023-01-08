@@ -14,7 +14,7 @@ def hello():
     """Return a friendly HTTP greeting."""
     return
 
-@app.route('/reponame', methods = ['GET'])
+@app.route('/api', methods = ['GET'])
 def return_data():
     input_repo = str(request.args(['reponame']))
     # Api call
