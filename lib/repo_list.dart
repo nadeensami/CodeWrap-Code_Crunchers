@@ -38,10 +38,10 @@ class RepoCard extends StatelessWidget {
                   )),
               openColor: repo.isNight
                   ? const Color.fromARGB(255, 13, 28, 81)
-                  : const Color.fromARGB(255, 240, 102, 16),
+                  : const Color(0xFF29053A),
               closedColor: repo.isNight
                   ? const Color.fromARGB(255, 13, 28, 81)
-                  : const Color.fromARGB(255, 240, 102, 16),
+                  : const Color(0xFF29053A),
               closedShape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(31))),
               closedBuilder: (context, openContainer) => Container(
@@ -69,8 +69,8 @@ class RepoCard extends StatelessWidget {
                                   const Color.fromARGB(255, 40, 51, 204)
                                 ]
                               : [
-                                  const Color.fromARGB(255, 240, 102, 16),
-                                  const Color.fromARGB(255, 226, 131, 75)
+                                  const Color(0xFFe88b74),
+                                  const Color(0xFF29053A),
                                 ]),
                       borderRadius: BorderRadius.circular(30)),
                   child: Align(
