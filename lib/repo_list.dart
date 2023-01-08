@@ -4,12 +4,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'demo_data.dart';
+import 'stories/main_controller.dart';
 
 class RepoList extends StatefulWidget {
   final List<Repo> repos;
   final Function onChange;
 
-  const RepoList({required this.repos, required this.onChange}) : super();
+  const RepoList({super.key, required this.repos, required this.onChange});
 
   @override
   RepoListState createState() => RepoListState();
@@ -31,34 +32,10 @@ class RepoCard extends StatelessWidget {
         child: Opacity(
             opacity: opacity,
             child: OpenContainer(
-              openBuilder: ((context, action) => Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: repo.isNight
-                            ? [
-                                const Color.fromARGB(255, 13, 28, 81),
-                                const Color.fromARGB(255, 40, 51, 204)
-                              ]
-                            : [
-                                const Color.fromARGB(255, 240, 102, 16),
-                                const Color.fromARGB(255, 226, 131, 75)
-                              ]),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text("data"),
-                      const FlutterLogo(),
-                      TextButton(
-                          onPressed: () {
-                            action();
-                          },
-                          child: const Text("Back"))
-                    ],
-                  ))),
+              openBuilder: ((context, action) => StoryMainPage(
+                    repo: repo,
+                    action: action,
+                  )),
               openColor: repo.isNight
                   ? const Color.fromARGB(255, 13, 28, 81)
                   : const Color.fromARGB(255, 240, 102, 16),
@@ -208,44 +185,10 @@ class RepoListState extends State<RepoList>
     return true;
   }
 
-  //If the user has released a pointer, and is currently scrolling, we'll assume they're done scrolling and tween our offset to zero.
-  //This is a bit of a hack, we can't be sure this event actually came from the same finger that was scrolling, but should work most of the time.
-  void _handlePointerUp(PointerUpEvent event) {
-    if (_isScrolling) {
-      _isScrolling = false;
-      _startOffsetTweenToZero();
-    }
-  }
-
   //Helper function, any time we change the offset, we want to rebuild the widget tree, so all the renderers get the new value.
   void _setOffset(double value) {
     setState(() {
       _normalizedOffset = value;
     });
-  }
-
-  //Tweens our offset from the current value, to 0
-  void _startOffsetTweenToZero() {
-    //The first time this runs, setup our controller, tween and animation. All 3 are required to control an active animation.
-    int tweenTime = 1000;
-    if (_tweenController == null) {
-      //Create Controller, which starts/stops the tween, and rebuilds this widget while it's running
-      _tweenController = AnimationController(
-          vsync: this, duration: Duration(milliseconds: tweenTime));
-      //Create Tween, which defines our begin + end values
-      _tween = Tween<double>(begin: -1, end: 0);
-      //Create Animation, which allows us to access the current tween value and the onUpdate() callback.
-      _tweenAnim = _tween.animate(
-          CurvedAnimation(parent: _tweenController, curve: Curves.elasticOut))
-        //Set our offset each time the tween fires, triggering a rebuild
-        ..addListener(() {
-          _setOffset(_tweenAnim.value);
-        });
-    }
-    //Restart the tweenController and inject a new start value into the tween
-    _tween.begin = _normalizedOffset;
-    _tweenController.reset();
-    _tween.end = 0;
-    _tweenController.forward();
   }
 }
