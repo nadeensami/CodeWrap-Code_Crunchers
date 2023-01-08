@@ -1,3 +1,4 @@
+import 'package:codewrap/stories/blabber_mouth_page.dart';
 import 'package:codewrap/stories/time_page.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +35,7 @@ class _StoryMainPageState extends State<StoryMainPage> {
       physics: const ClampingScrollPhysics(),
       children: [
         MainStory(widget.repo, widget.action),
-        const Center(
-          child: Text("data"),
-        ),
+        BlabberMouthPage(widget.repo),
         TimePage(widget.repo)
       ],
     );
