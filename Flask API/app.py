@@ -12,16 +12,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
-    message = "It's running!"
-
-    """Get Cloud Run environment variables."""
-    service = os.environ.get('K_SERVICE', 'Unknown service')
-    revision = os.environ.get('K_REVISION', 'Unknown revision')
-
-    return render_template('index.html',
-        message=message,
-        Service=service,
-        Revision=revision)
+    return
 
 @app.route('/reponame', methods = ['GET'])
 def return_data():
