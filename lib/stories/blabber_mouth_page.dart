@@ -59,8 +59,8 @@ class _BlabberMouthPageState extends State<BlabberMouthPage>
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xffD76F82),
-                      Color.fromARGB(255, 138, 56, 71),
+                      Color.fromARGB(255, 255, 162, 179),
+                      Color.fromARGB(255, 178, 77, 95),
                     ]),
               )),
 
