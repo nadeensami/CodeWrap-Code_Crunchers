@@ -70,6 +70,7 @@ flutter:
     - images/logo.png
     - images/clouds.jpg
     - images/lips.png
+    - images/crying.png
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

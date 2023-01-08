@@ -1,4 +1,5 @@
 import 'package:codewrap/stories/blabber_mouth_page.dart';
+import 'package:codewrap/stories/revert_page.dart';
 import 'package:codewrap/stories/time_page.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,11 @@ class _StoryMainPageState extends State<StoryMainPage> {
       children: [
         MainStory(widget.repo, widget.action),
         BlabberMouthPage(widget.repo),
-        TimePage(widget.repo)
+        TimePage(widget.repo),
+        RevertPage(widget.repo),
+        const Center(
+          child: Text("data"),
+        ),
       ],
     );
   }
