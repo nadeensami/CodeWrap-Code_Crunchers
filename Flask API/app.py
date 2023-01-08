@@ -5,6 +5,7 @@ import os
 import requests
 import ast
 from flask import Flask, render_template
+# import openai
 
 def determine_time_of_day(commits):
     morning_commits = 0
@@ -15,9 +16,11 @@ def determine_time_of_day(commits):
             morning_commits += num_commits
         else:
             evening_commits += num_commits
-
-    morning_percentage = morning_commits / (morning_commits + evening_commits)
-    evening_percentage = evening_commits / (morning_commits + evening_commits)
+    try:
+        morning_percentage = morning_commits / (morning_commits + evening_commits)
+        evening_percentage = evening_commits / (morning_commits + evening_commits)
+    except:
+        morning_percentage = 1
 
     if morning_percentage > evening_percentage:
         return "morning"
@@ -41,6 +44,10 @@ def getRepos(username):
         repos += [repoObject['name'] for repoObject in data]
     print(repos)
     return repos
+
+def generate_poem():
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+    return poem
 
 # Set the request headers
 headers = {
@@ -68,7 +75,6 @@ def api(owner):
         url_stats = "https://api.github.com/repos/{}/{}/stats/punch_card".format(owner, repo)
         # Make the request
         response = requests.get(url_stats, headers=headers)
-        print(response.content)
         byte_array_str = response.content.decode()
         # Use ast.literal_eval to parse the string and return the corresponding value
         normal_list = ast.literal_eval(byte_array_str)
@@ -98,7 +104,6 @@ def getRepos(username):
     r.raise_for_status()
     data = r.json()
     repos += [repoObject['name'] for repoObject in data]
-
   return repos
 
 if __name__ == '__main__':
