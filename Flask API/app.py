@@ -12,9 +12,13 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
-    return
+    return 'hey'
 
 @app.route('/api', methods = ['GET'])
+=======
+    return "hey"
+
+@app.route('/reponame', methods = ['GET'])
 def return_data():
     input_repo = str(request.args(['reponame']))
     # Api call
