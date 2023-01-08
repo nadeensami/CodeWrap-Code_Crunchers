@@ -1,7 +1,7 @@
 """
 A sample Hello World server. With a reponame API call
 """
-import os
+import os, requests
 
 from flask import Flask, render_template
 
@@ -21,6 +21,24 @@ def return_data():
     
     # Data format
     return output
+
+def getRepos(username):
+  page = 1
+  url = f'https://api.github.com/users/{username}/repos?type=all&per_page=10&page={page}'
+  r = requests.get(url)
+  r.raise_for_status()
+  data = r.json()
+
+  repos = [repoObject['name'] for repoObject in data]
+  while len(data) > 0:
+    page += 1
+    url = f'https://api.github.com/users/{username}/repos?type=all&per_page=10&page={page}'
+    r = requests.get(url)
+    r.raise_for_status()
+    data = r.json()
+    repos += [repoObject['name'] for repoObject in data]
+
+  return repos
 
 if __name__ == '__main__':
     server_port = os.environ.get('PORT', '8080')
