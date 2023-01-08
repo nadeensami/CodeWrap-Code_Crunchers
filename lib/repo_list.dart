@@ -1,5 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'demo_data.dart';
 
@@ -15,8 +17,8 @@ class RepoList extends StatefulWidget {
 
 class RepoCard extends StatelessWidget {
   final Repo repo;
-  final double width = 280;
-  final double height = 200;
+  final double width = 290;
+  final double height = 250;
   final double rotation = 0;
   final double opacity = 1;
 
@@ -28,40 +30,99 @@ class RepoCard extends StatelessWidget {
         angle: rotation,
         child: Opacity(
             opacity: opacity,
-            child: Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 40, 40, 40),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
+            child: OpenContainer(
+              openBuilder: ((context, action) => Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: repo.isNight
+                            ? [
+                                const Color.fromARGB(255, 13, 28, 81),
+                                const Color.fromARGB(255, 40, 51, 204)
+                              ]
+                            : [
+                                const Color.fromARGB(255, 240, 102, 16),
+                                const Color.fromARGB(255, 226, 131, 75)
+                              ]),
+                  ),
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(repo.user,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 10),
-                      Text(repo.name,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300)),
-                      const SizedBox(height: 10),
-                      Text(repo.isNight ? "Night" : "Day",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300)),
-                      const SizedBox(height: 10),
-                      Text("${repo.nightPercent}%",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300)),
-                    ]))));
+                      const Text("data"),
+                      const FlutterLogo(),
+                      TextButton(
+                          onPressed: () {
+                            action();
+                          },
+                          child: const Text("Back"))
+                    ],
+                  ))),
+              openColor: repo.isNight
+                  ? const Color.fromARGB(255, 13, 28, 81)
+                  : const Color.fromARGB(255, 240, 102, 16),
+              closedColor: repo.isNight
+                  ? const Color.fromARGB(255, 13, 28, 81)
+                  : const Color.fromARGB(255, 240, 102, 16),
+              closedShape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(31))),
+              closedBuilder: (context, openContainer) => Container(
+                  width: width,
+                  height: height,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 72, 105, 126)
+                              .withAlpha(100),
+                          blurRadius: 15.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(
+                            0.0,
+                            3.0,
+                          ),
+                        )
+                      ],
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: repo.isNight
+                              ? [
+                                  const Color.fromARGB(255, 13, 28, 81),
+                                  const Color.fromARGB(255, 40, 51, 204)
+                                ]
+                              : [
+                                  const Color.fromARGB(255, 240, 102, 16),
+                                  const Color.fromARGB(255, 226, 131, 75)
+                                ]),
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${repo.user} /",
+                                style: GoogleFonts.ibmPlexMono(
+                                    textStyle: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w300))),
+                            // const SizedBox(height: 10),
+                            Text(
+                              repo.name,
+                              style: GoogleFonts.ptSerif(
+                                  textStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 60,
+                                      fontWeight: FontWeight.bold)),
+                            )
+                          ]),
+                    ),
+                  )),
+            )));
   }
 }
 
@@ -94,10 +155,10 @@ class RepoListState extends State<RepoList>
     //Create our main list
     Widget listContent = SizedBox(
         //Wrap list in a container to control height and padding
-        height: _cardHeight,
+        height: _cardHeight + 100,
         //Use a ListView.builder, calls buildItemRenderer() lazily, whenever it need to display a listItem
         child: CarouselSlider(
-          options: CarouselOptions(height: 400.0),
+          options: CarouselOptions(height: 500.0),
           items: widget.repos.map((i) {
             return Builder(
               builder: (BuildContext context) {
